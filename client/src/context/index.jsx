@@ -1,4 +1,6 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import Web3Modal from 'web3modal';
+import {ethers} from "ethers";
 
 const GlobalContext = createContext();
 
@@ -8,7 +10,24 @@ export const GlobalContextProvider = ({children}) => {
 
     const updateCurrentWalletAddress = async () => {
         const accounts = await window.ethereum.request({method: 'eth_requestAccounts'});
+        console.log(accounts[0]);
     }
+
+    useEffect(() => {
+        updateCurrentWalletAddress();
+    }, []);
+
+    useEffect(() => {
+        const setSmartContractAndProvider = async () => {
+            const web3Modal = new Web3Modal();
+            const connection = await web3Modal.connect();
+            const newProvider = new ethers.providers.Web3Provider(connection);
+            const signer = newProvider.getSigner();
+            const contract = new ethers.Contract();
+        }
+        setSmartContractAndProvider();
+    }, []);
+
     return (
         <GlobalContext.Provider
             value={{
