@@ -1,27 +1,24 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 const hardhat_1 = require("hardhat");
-async function main() {
-    // Hardhat always runs the compile task when running scripts with its command
-    // line interface.
-    //
-    // If this script is run directly using `node` you may want to call compile
-    // manually to make sure everything is compiled
-    // await hre.run('compile');
-    // We get the contract to deploy
-    const Greeter = await hardhat_1.ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, Hardhat!");
-    await greeter.deployed();
-    console.log("Greeter deployed to:", greeter.address);
+const console_1 = __importDefault(require("console"));
+const _metadataUri = 'https://gateway.pinata.cloud/ipfs/https://gateway.pinata.cloud/ipfs/QmX2ubhtBPtYw75Wrpv6HLb1fhbJqxrnbhDo1RViW3oVoi';
+async function deploy(name, ...params) {
+    const contractFactory = await hardhat_1.ethers.getContractFactory(name);
+    return await contractFactory.deploy(...params).then((f) => f.deployed());
 }
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
+async function main() {
+    const [admin] = await hardhat_1.ethers.getSigners();
+    console_1.default.log(`Deploying a smart contract...`);
+    const AVAXGods = (await deploy('AVAXGods', _metadataUri)).connect(admin);
+    console_1.default.log({ AVAXGods: AVAXGods.address });
+}
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+    console_1.default.error(error);
+    process.exit(1);
 });
