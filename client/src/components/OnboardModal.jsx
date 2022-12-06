@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 
 import styles from '../styles';
 import { CustomButton } from '.';
-import { useGlobalContext } from '../context';
+import { useGlobalContext } from '../context/index.jsx';
 import { GetParams, SwitchNetwork } from '../utils/onboard.js';
 
 const OnboardModal = () => {
