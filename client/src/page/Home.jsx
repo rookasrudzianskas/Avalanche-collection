@@ -13,7 +13,7 @@ const Home = () => {
         const playerExists = await contract?.isPlayer(walletAddress);
 
         if(!playerExists) {
-            await contract?.registerPlayer(playerName, playerName);
+            await contract?.registerPlayer(playerName, playerName, { gasLimit: 200000 });
 
             setShowAlert({
                 status: true,
