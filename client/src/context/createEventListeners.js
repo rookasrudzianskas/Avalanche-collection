@@ -60,6 +60,8 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
                 playAudio(defenseSound);
             }
         }
+
+        setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
     });
 
 
