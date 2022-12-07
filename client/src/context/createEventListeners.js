@@ -59,8 +59,8 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
             setShowAlert({
                 status: true,
                 type: 'success',
-                message: 'Player game token has been successfully generated',
-            });
+                message: 'Game token has been successfully created',
+            })
 
             navigate('/create-battle');
         }
