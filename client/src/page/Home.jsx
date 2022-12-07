@@ -16,7 +16,7 @@ const Home = () => {
             setShowAlert({
                 status: true,
                 type: "info",
-                message: `${playerName} registered successfully`
+                message: `${playerName} is being summoned to the arena!`
             });
         }
     } catch (error) {

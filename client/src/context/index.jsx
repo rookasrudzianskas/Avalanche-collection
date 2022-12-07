@@ -2,11 +2,14 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import Web3Modal from 'web3modal';
 import {ethers} from "ethers";
 import {ABI, ADDRESS} from "../contract/index.js";
+import {createEventListeners} from "./createEventListeners.js";
+import {useNavigate} from "react-router-dom";
 
 const GlobalContext = createContext();
 
 export const GlobalContextProvider = ({children}) => {
     // Interacting with smart contracts
+    const navigate = useNavigate();
     const [walletAddress, setWalletAddress] = useState("");
     const [contract, setContract] = useState(null);
     const [provider, setProvider] = useState(null);
@@ -44,6 +47,21 @@ export const GlobalContextProvider = ({children}) => {
 
         setSmartContractAndProvider();
     }, []);
+
+
+    useEffect(() => {
+        if(contract) {
+            // if (step === -1 && contract) {
+                createEventListeners({
+                    navigate,
+                    contract,
+                    provider,
+                    walletAddress,
+                    setShowAlert,
+                });
+            // }
+        }
+    }, [contract]);
 
     useEffect(() => {
         if (showAlert?.status) {
