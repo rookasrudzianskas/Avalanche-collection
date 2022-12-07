@@ -12,6 +12,9 @@ const AddNewEvent = (eventFilter, provider, cb) => {
     });
 }
 
+const emptyAccount = '0x0000000000000000000000000000000000000000';
+
+
 export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert, player1Ref, player2Ref, setUpdateGameData }) => {
     const NewPlayerEventFilter = contract.filters.NewPlayer();
     AddNewEvent(NewPlayerEventFilter, provider, ({ args }) => {
@@ -42,6 +45,22 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
         console.log('Battle move initiated!', args);
     });
 
+    const RoundEndedEventFilter = contract.filters.RoundEnded();
+    AddNewEvent(RoundEndedEventFilter, provider, ({ args }) => {
+        console.log('Round ended!', args, walletAddress);
+
+        for (let i = 0; i < args.damagedPlayers.length; i += 1) {
+            if (args.damagedPlayers[i] !== emptyAccount) {
+                if (args.damagedPlayers[i] === walletAddress) {
+                    sparcle(getCoords(player1Ref));
+                } else if (args.damagedPlayers[i] !== walletAddress) {
+                    sparcle(getCoords(player2Ref));
+                }
+            } else {
+                playAudio(defenseSound);
+            }
+        }
+    });
 
 
 }
