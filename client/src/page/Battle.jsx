@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from '../styles';
 import { useGlobalContext } from '../context';
 import { attack, attackSound, defense, defenseSound, player01 as player01Icon, player02 as player02Icon } from '../assets';
+import {ActionButton, Alert, Card, GameInfo, PlayerInfo} from "../components/index.js";
 
 const Battle = ({}) => {
     const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround} = useGlobalContext();
@@ -50,7 +51,43 @@ const Battle = ({}) => {
 
     return (
         <div className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}>
-            <h1 className="text-xl text-white">{battleName}</h1>
+            {showAlert?.status && <Alert type={showAlert.type} message={showAlert.message} />}
+
+            <PlayerInfo player={player2} playerIcon={player02Icon} mt />
+
+            <div className={`${styles.flexCenter} flex-col my-10`}>
+                <Card
+                    card={player2}
+                    title={player2?.playerName}
+                    cardRef={""}
+                    playerTwo
+                />
+
+                <div className="flex items-center flex-row">
+                    <ActionButton
+                        imgUrl={attack}
+                        handleClick={() => {}}
+                        restStyles="mr-2 hover:border-yellow-400"
+                    />
+
+                    <Card
+                        card={player1}
+                        title={player1?.playerName}
+                        cardRef={""}
+                        restStyles="mt-3"
+                    />
+
+                    <ActionButton
+                        imgUrl={defense}
+                        handleClick={() => {}}
+                        restStyles="ml-6 hover:border-red-600"
+                    />
+                </div>
+            </div>
+
+            <PlayerInfo player={player1} playerIcon={player01Icon} />
+
+            <GameInfo />
         </div>
     );
 };
