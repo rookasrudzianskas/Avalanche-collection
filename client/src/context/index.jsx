@@ -18,6 +18,7 @@ export const GlobalContextProvider = ({children}) => {
         type: 'info',
         message: ''
     });
+    const [battleName, setBattleName] = useState("");
 
     //* Set the wallet address to the state
     const updateCurrentWalletAddress = async () => {
@@ -82,6 +83,8 @@ export const GlobalContextProvider = ({children}) => {
                 walletAddress,
                 showAlert,
                 setShowAlert,
+                battleName,
+                setBattleName,
             }}
         >
             {children}
