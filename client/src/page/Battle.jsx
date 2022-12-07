@@ -5,9 +5,10 @@ import styles from '../styles';
 import { useGlobalContext } from '../context';
 import { attack, attackSound, defense, defenseSound, player01 as player01Icon, player02 as player02Icon } from '../assets';
 import {ActionButton, Alert, Card, GameInfo, PlayerInfo} from "../components/index.js";
+import {playAudio} from "../utils/animation.js";
 
 const Battle = ({}) => {
-    const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround} = useGlobalContext();
+    const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround, setShowAlert, setErrorMessage} = useGlobalContext();
     const [player1, setPlayer1] = useState({});
     const [player2, setPlayer2] = useState({});  // battle/NameofBattle
     const {battleName} = useParams();
@@ -48,6 +49,23 @@ const Battle = ({}) => {
         if (contract && gameData.activeBattle) getPlayerInfo();
     }, [contract, gameData, battleName]);
 
+    const makeAMove = async (choice) => {
+        playAudio(choice === 1 ? attackSound : defenseSound);
+
+        try {
+            console.log("GOING IN")
+            await contract.attackOrDefendChoice(choice, battleName, { gasLimit: 200000 });
+
+            setShowAlert({
+                status: true,
+                type: 'info',
+                message: `Initiating ${choice === 1 ? 'attack' : 'defense'}`,
+            });
+        } catch (error) {
+            setErrorMessage(error);
+        }
+    };
+
 
     return (
         <div className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}>
@@ -66,7 +84,7 @@ const Battle = ({}) => {
                 <div className="flex items-center flex-row">
                     <ActionButton
                         imgUrl={attack}
-                        handleClick={() => {}}
+                        handleClick={() => makeAMove(1)}
                         restStyles="mr-2 hover:border-yellow-400"
                     />
 
@@ -79,7 +97,7 @@ const Battle = ({}) => {
 
                     <ActionButton
                         imgUrl={defense}
-                        handleClick={() => {}}
+                        handleClick={() => makeAMove(2)}
                         restStyles="ml-6 hover:border-red-600"
                     />
                 </div>
