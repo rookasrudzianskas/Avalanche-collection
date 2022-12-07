@@ -10,8 +10,16 @@ const Battleground = ({}) => {
     const navigate = useNavigate();
     const {setBattleGround, setShowAlert, showAlert} = useGlobalContext();
 
-    const handleBattleChoice = (ground) => {
+    const handleBattleGroundChoice = (ground) => {
+        setBattleGround(ground.id);
 
+        localStorage.setItem('battleGround', ground.id);
+
+        setShowAlert({ status: true, type: 'info', message: `${ground.name} is battle ready!` });
+
+        setTimeout(() => {
+            navigate(-1);
+        }, 1000);
     }
 
 
@@ -26,9 +34,13 @@ const Battleground = ({}) => {
             </h1>
 
             <div className={`${styles.flexCenter} ${styles.battleGroundsWrapper}`}>
-                {battlegrounds.map((ground, index) => (
-                    <div key={ground.id} className={`${styles.flexCenter} ${styles.battleGroundCard}`} onClick={() => handleBattleChoice(ground)}>
-                        <img src={ground.image} alt="image" className={`${styles.battleGroundCardImg}`}/>
+                {battlegrounds.map((ground) => (
+                    <div
+                        key={ground.id}
+                        className={`${styles.flexCenter} ${styles.battleGroundCard}`}
+                        onClick={() => handleBattleGroundChoice(ground)}
+                    >
+                        <img src={ground.image} alt="saiman" className={styles.battleGroundCardImg} />
 
                         <div className="info absolute">
                             <p className={styles.battleGroundCardText}>{ground.name}</p>
@@ -36,7 +48,6 @@ const Battleground = ({}) => {
                     </div>
                 ))}
             </div>
-
         </div>
     );
 };
