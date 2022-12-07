@@ -6,7 +6,7 @@ import { useGlobalContext } from '../context';
 import { attack, attackSound, defense, defenseSound, player01 as player01Icon, player02 as player02Icon } from '../assets';
 
 const Battle = ({}) => {
-    const { contract, gameData, walletAddress, showAlert} = useGlobalContext();
+    const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround} = useGlobalContext();
     const [player1, setPlayer1] = useState({});
     const [player2, setPlayer2] = useState({});  // battle/NameofBattle
     const {battleName} = useParams();
@@ -14,7 +14,7 @@ const Battle = ({}) => {
 
 
     return (
-        <div className={`${styles.flexBetween} ${styles.gameContainer} astral`}>
+        <div className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}>
             <h1 className="text-xl text-white">{battleName}</h1>
         </div>
     );
