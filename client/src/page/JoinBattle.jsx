@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {CustomButton, PageHOC} from "../components/index.js";
 import {useNavigate} from "react-router-dom";
 import styles from "../styles";
@@ -7,6 +7,10 @@ import {useGlobalContext} from "../context/index.jsx";
 const JoinBattle = ({}) => {
     const navigate = useNavigate();
     const { contract, gameData, setShowAlert, setBattleName, walletAddress } = useGlobalContext();
+
+    useEffect(() => {
+
+    }, [gameData]);
 
     const handleClick = async (battleName) => {
         setBattleName(battleName);

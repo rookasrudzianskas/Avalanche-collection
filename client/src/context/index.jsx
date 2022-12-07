@@ -20,6 +20,7 @@ export const GlobalContextProvider = ({children}) => {
     });
     const [battleName, setBattleName] = useState("");
     const [gameData, setGameData] = useState({ players: [], pendingBattles: [], activeBattle: null });
+    const [updateGameData, setUpdateGameData] = useState(0);
 
 
     //* Set the wallet address to the state
@@ -61,6 +62,7 @@ export const GlobalContextProvider = ({children}) => {
                     provider,
                     walletAddress,
                     setShowAlert,
+                    setUpdateGameData,
                 });
             // }
         }
