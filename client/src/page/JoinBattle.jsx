@@ -6,7 +6,7 @@ import {useGlobalContext} from "../context/index.jsx";
 
 const JoinBattle = ({}) => {
     const navigate = useNavigate();
-    const { contract, gameData, setShowAlert, setBattleName, walletAddress } = useGlobalContext();
+    const { contract, gameData, setShowAlert, setBattleName, walletAddress, setErrorMessage } = useGlobalContext();
 
     useEffect(() => {
 
@@ -24,7 +24,7 @@ const JoinBattle = ({}) => {
                 message:  `Joining ${battleName}`
             });
         } catch (error) {
-            console.log(error);
+            setErrorMessage(error.message);
         }
 
     }

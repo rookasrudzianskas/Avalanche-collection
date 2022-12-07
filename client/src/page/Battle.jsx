@@ -53,7 +53,6 @@ const Battle = ({}) => {
         playAudio(choice === 1 ? attackSound : defenseSound);
 
         try {
-            console.log("GOING IN")
             await contract.attackOrDefendChoice(choice, battleName, { gasLimit: 200000 });
 
             setShowAlert({
@@ -65,7 +64,6 @@ const Battle = ({}) => {
             setErrorMessage(error);
         }
     };
-
 
     return (
         <div className={`${styles.flexBetween} ${styles.gameContainer} ${battleGround}`}>
