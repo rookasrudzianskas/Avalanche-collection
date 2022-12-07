@@ -23,6 +23,16 @@ export const GlobalContextProvider = ({children}) => {
     const [updateGameData, setUpdateGameData] = useState(0);
     const [battleGround, setBattleGround] = useState('bg-astral');
 
+    useEffect(() => {
+        const battlegroundFromLocalStorage = localStorage.getItem('battleGround');
+
+        if (battlegroundFromLocalStorage) {
+            setBattleGround(battlegroundFromLocalStorage);
+        } else {
+            localStorage.setItem('battleGround', battleGround);
+        }
+    }, []);
+
 
     //* Set the wallet address to the state
     const updateCurrentWalletAddress = async () => {
