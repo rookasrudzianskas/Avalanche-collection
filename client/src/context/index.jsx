@@ -62,6 +62,8 @@ export const GlobalContextProvider = ({children}) => {
                 // state
                 contract,
                 walletAddress,
+                showAlert,
+                setShowAlert,
             }}
         >
             {children}
