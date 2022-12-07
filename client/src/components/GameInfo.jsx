@@ -23,7 +23,6 @@ const GameInfo = ({}) => {
         }
     }
 
-
     return (
         <>
             <div className={styles.gameInfoIconBox}>

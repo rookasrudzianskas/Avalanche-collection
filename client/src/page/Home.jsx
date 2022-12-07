@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const Home = () => {
     const navigate = useNavigate();
-  const {contract, walletAddress, setShowAlert} = useGlobalContext();
+  const {contract, walletAddress, setShowAlert, gameData} = useGlobalContext();
   const [playerName, setPlayerName] = useState('');
 
   const handleClick = async () => {
@@ -40,6 +40,12 @@ const Home = () => {
       }
       if(contract) checkForPlayerToken();
   }, [contract]);
+
+  useEffect(() => {
+      if(gameData.activeBattle) {
+            navigate(`/battle/${gameData.activeBattle.name}`);
+      }
+  }, [gameData]);
 
 
   return (
