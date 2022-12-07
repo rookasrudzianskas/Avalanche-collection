@@ -4,8 +4,8 @@ import {useGlobalContext} from "../context/index.jsx";
 import {useNavigate} from "react-router-dom";
 
 const Home = () => {
-    const navigate = useNavigate();
-  const {contract, walletAddress, setShowAlert, gameData} = useGlobalContext();
+  const navigate = useNavigate();
+  const {contract, walletAddress, setShowAlert, gameData, setErrorMessage} = useGlobalContext();
   const [playerName, setPlayerName] = useState('');
 
   const handleClick = async () => {
@@ -22,14 +22,9 @@ const Home = () => {
             });
         }
     } catch (error) {
-        setShowAlert({
-            status: true,
-            type: "failure",
-            message: error.message
-        });
+        setErrorMessage(error.message);
     }
   }
-
 
   useEffect(() => {
       const checkForPlayerToken = async () => {
@@ -43,10 +38,9 @@ const Home = () => {
 
   useEffect(() => {
       if(gameData.activeBattle) {
-            navigate(`/battle/${gameData.activeBattle.name}`);
+          navigate(`/battle/${gameData.activeBattle.name}`);
       }
   }, [gameData]);
-
 
   return (
     <div className="flex flex-col">
