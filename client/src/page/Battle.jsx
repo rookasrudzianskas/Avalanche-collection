@@ -10,7 +10,7 @@ import {playAudio} from "../utils/animation.js";
 const Battle = ({}) => {
     const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround, setShowAlert, setErrorMessage, player1Ref, player2Ref} = useGlobalContext();
     const [player1, setPlayer1] = useState({});
-    const [player2, setPlayer2] = useState({});  // battle/NameofBattle
+    const [player2, setPlayer2] = useState({});  // battle/NameOfBattle
     const {battleName} = useParams();
     const navigate = useNavigate();
 
