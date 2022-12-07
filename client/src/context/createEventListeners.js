@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 
 import { ABI } from '../contract';
+import { playAudio, sparcle } from '../utils/animation.js';
+import { defenseSound } from '../assets';
 
 const AddNewEvent = (eventFilter, provider, cb) => {
     provider.removeListener(eventFilter);
@@ -10,10 +12,19 @@ const AddNewEvent = (eventFilter, provider, cb) => {
 
         cb(parsedLog);
     });
-}
+};
+
+//* Get battle card coordinates
+const getCoords = (cardRef) => {
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+
+    return {
+        pageX: left + width / 2,
+        pageY: top + height / 2.25,
+    };
+};
 
 const emptyAccount = '0x0000000000000000000000000000000000000000';
-
 
 export const createEventListeners = ({ navigate, contract, provider, walletAddress, setShowAlert, player1Ref, player2Ref, setUpdateGameData }) => {
     const NewPlayerEventFilter = contract.filters.NewPlayer();
@@ -33,11 +44,26 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
     AddNewEvent(NewBattleEventFilter, provider, ({ args }) => {
         console.log('New battle started!', args, walletAddress);
 
-        if(walletAddress.toLowerCase() === args.player1.toLowerCase() || walletAddress.toLowerCase() === args.player2.toLowerCase()) {
+        if (walletAddress.toLowerCase() === args.player1.toLowerCase() || walletAddress.toLowerCase() === args.player2.toLowerCase()) {
             navigate(`/battle/${args.battleName}`);
         }
 
         setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
+    });
+
+    const NewGameTokenEventFilter = contract.filters.NewGameToken();
+    AddNewEvent(NewGameTokenEventFilter, provider, ({ args }) => {
+        console.log('New game token created!', args.owner);
+
+        if (walletAddress.toLowerCase() === args.owner.toLowerCase()) {
+            setShowAlert({
+                status: true,
+                type: 'success',
+                message: 'Player game token has been successfully generated',
+            });
+
+            navigate('/create-battle');
+        }
     });
 
     const BattleMoveEventFilter = contract.filters.BattleMove();
@@ -64,5 +90,15 @@ export const createEventListeners = ({ navigate, contract, provider, walletAddre
         setUpdateGameData((prevUpdateGameData) => prevUpdateGameData + 1);
     });
 
+    // Battle Ended event listener
+    const BattleEndedEventFilter = contract.filters.BattleEnded();
+    AddNewEvent(BattleEndedEventFilter, provider, ({ args }) => {
+        if (walletAddress.toLowerCase() === args.winner.toLowerCase()) {
+            setShowAlert({ status: true, type: 'success', message: 'You won!' });
+        } else if (walletAddress.toLowerCase() === args.loser.toLowerCase()) {
+            setShowAlert({ status: true, type: 'failure', message: 'You lost!' });
+        }
 
-}
+        navigate('/create-battle');
+    });
+};

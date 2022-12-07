@@ -8,7 +8,7 @@ import {ActionButton, Alert, Card, GameInfo, PlayerInfo} from "../components/ind
 import {playAudio} from "../utils/animation.js";
 
 const Battle = ({}) => {
-    const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround, setShowAlert, setErrorMessage} = useGlobalContext();
+    const { contract, gameData, walletAddress, showAlert, battleGround, setBattleGround, setShowAlert, setErrorMessage, player1Ref, player2Ref} = useGlobalContext();
     const [player1, setPlayer1] = useState({});
     const [player2, setPlayer2] = useState({});  // battle/NameofBattle
     const {battleName} = useParams();
@@ -75,7 +75,7 @@ const Battle = ({}) => {
                 <Card
                     card={player2}
                     title={player2?.playerName}
-                    cardRef={""}
+                    cardRef={player2Ref}
                     playerTwo
                 />
 
@@ -89,7 +89,7 @@ const Battle = ({}) => {
                     <Card
                         card={player1}
                         title={player1?.playerName}
-                        cardRef={""}
+                        cardRef={player1Ref}
                         restStyles="mt-3"
                     />
 
